@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PlexLabelNewShows.Repositories;
 
 namespace PlexLabelNewShows
 {
@@ -10,6 +7,11 @@ namespace PlexLabelNewShows
     {
         static void Main(string[] args)
         {
+            var dataclass = new DataClass();
+            var dt = dataclass.GetShowsWithoutLabel();
+            dataclass.DisplayResults(dt);
+            Console.WriteLine("Press enter to close...");
+            Console.ReadLine();
         }
     }
 }

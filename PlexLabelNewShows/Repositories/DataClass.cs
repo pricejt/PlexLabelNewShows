@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data.SQLite;
 using System.Configuration;
 using System.Data;
 
@@ -6,12 +7,12 @@ namespace PlexLabelNewShows.Repositories
 {
     class DataClass
     {
-        private SQLiteConnection sqlite;
+        private static SQLiteConnection sqlite;
         private static readonly string PlexDbPath = ConfigurationManager.AppSettings["PlexDB"];
 
         public DataClass()
         {
-            var pathToFile = "Data Source=" + PlexDbPath;
+            var pathToFile = "Data Source=" + PlexDbPath + ";New=False;";
             sqlite = new SQLiteConnection(pathToFile);
         }
 
@@ -56,12 +57,31 @@ ORDER BY added_at DESC";
                 ad = new SQLiteDataAdapter(cmd);
                 ad.Fill(dt);
             }
-            catch (SQLiteException)
+            catch (SQLiteException ex)
             {
-                //Ignore for now
+                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Press enter to close...");
+                Console.ReadLine();
             }
-            sqlite.Close();
+            finally
+            {
+                sqlite.Close();
+            }
+
             return dt;
+        }
+
+        public void DisplayResults(DataTable dt)
+        {
+            Console.WriteLine("Rows: " + dt.Rows.Count);
+            
+            foreach (DataRow dataRow in dt.Rows)
+            {
+                foreach (var item in dataRow.ItemArray)
+                {
+                    Console.WriteLine(item);
+                }
+            }
         }
     }
 }

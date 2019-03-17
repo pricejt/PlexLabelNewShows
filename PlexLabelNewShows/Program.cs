@@ -19,8 +19,6 @@ namespace PlexLabelNewShows
             {
                 Console.WriteLine("No Rows to Process");
             }
-            Console.WriteLine("Press enter to close...");
-            Console.ReadLine();
         }
     }
 }
